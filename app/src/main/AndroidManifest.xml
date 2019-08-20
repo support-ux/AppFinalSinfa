@@ -14,15 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ConsultaActivity">
+        <activity android:name=".Activitys.ConsultaActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CodeVerificationActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activitys.CodeVerificationActivity" />
+        <activity android:name=".Activitys.MainActivity">
 
         </activity>
     </application>
