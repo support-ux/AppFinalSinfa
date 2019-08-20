@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "148886815583",
+    "firebase_url": "https://sinfaauth.firebaseio.com",
+    "project_id": "sinfaauth",
+    "storage_bucket": "sinfaauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148886815583:android:10c242b3104a282f",
+        "android_client_info": {
+          "package_name": "com.example.sinfaboletafinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148886815583-6uo584ep3234l58t9jq65u6o39dcjej3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sinfaboletafinal",
+            "certificate_hash": "0eeed2faee9166004ad2d5a778d1b4da479afbc8"
+          }
+        },
+        {
+          "client_id": "148886815583-kngophabjn5frajn48g094qutif4rh46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHBLFuHwjLQ_jWYSSUVXVRSHL0m3NyP0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148886815583-kngophabjn5frajn48g094qutif4rh46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
