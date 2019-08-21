@@ -49,6 +49,10 @@ public class CodeVerificationActivity extends AppCompatActivity {
         String phonenumber = getIntent().getStringExtra("phonenumber");
         sendVerificationCode(phonenumber);
         txtMensaje.setText("Espere mientras se envía el codigo de verificación al número "+phonenumber+". Esto puede tardar unos segundos...");
+        btnContinuar.setEnabled(false);
+        CodeVerification.setEnabled(false
+        );
+
 
         btnContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +64,8 @@ public class CodeVerificationActivity extends AppCompatActivity {
                     CodeVerification.requestFocus();
                     return;
                 }else{
+                    CodeVerification.setEnabled(true);
+                    btnContinuar.setEnabled(true);
                     verifyCode(code);
                 }
             }

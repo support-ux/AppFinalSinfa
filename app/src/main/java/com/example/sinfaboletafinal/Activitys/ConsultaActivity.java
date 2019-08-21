@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sinfaboletafinal.Entidades.Persona;
 import com.example.sinfaboletafinal.R;
 
 import org.json.JSONArray;
@@ -119,7 +120,7 @@ byte[] pdf;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Toast.makeText(ConsultaActivity.this,"Archivo guardado en: "+filepath,Toast.LENGTH_LONG).show();
+        Toast.makeText(ConsultaActivity.this,"Boleta guardada en: "+filepath,Toast.LENGTH_LONG).show();
 
     }
 
@@ -133,7 +134,7 @@ byte[] pdf;
         if(TextUtils.isEmpty(NSA)||NSA.length()<6) {
             txtnsa.setError("Ingrese NSA Válido...!!");
         }else{
-            buscarResultados("http://192.168.1.2/wsboletas/Datos/getDataClient.php?nsa="+NSA+"&anio="+ANIO+"&mes="+MES);
+            buscarResultados("http://192.168.230.2/wsboletas/Datos/getDataClient.php?nsa="+NSA+"&anio="+ANIO+"&mes="+MES);
 
         }
     }
@@ -145,16 +146,28 @@ byte[] pdf;
             public void onResponse(String response) {
 
                 try {
+                    Persona persona = new Persona();
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.optJSONArray("datos");
 
                     jsonObject = jsonArray.getJSONObject(0);
+                    int id = jsonObject.optInt("ID");
                     String nsa = jsonObject.optString("NSA");
+                    String nombres = jsonObject.optString("NOMBRES");
+                    String apellidos = jsonObject.optString("APELLIDOS");
                     String anio = jsonObject.optString("ANIO");
                     String mes = jsonObject.optString("MES");
 
+                    persona.setId(id);
+                    persona.setNsa(nsa);
+                    persona.setNombre(nombres);
+                    persona.setApellidos(apellidos);
+                    persona.setAnio(anio);
+                    persona.setMes(mes);
+
                     if(nsa.equals("NO REGISTRA NSA")){
 
+                        textView6.setText("");
                         textView6.setVisibility(View.GONE);
                         btnDownload.setVisibility(View.GONE);
                         Toast.makeText(ConsultaActivity.this,"NO SE ENCONTRARON RESULTADOS",Toast.LENGTH_LONG).show();
@@ -168,6 +181,7 @@ byte[] pdf;
 
                         String name = "NSA-"+nsa+"-B-"+mes+"-"+anio;
                         Nombre = name;
+                        textView6.setText("Click en Download para descargar su boleta "+Nombre+" en Formato PDF");
                         textView6.setVisibility(View.VISIBLE);
                         btnDownload.setVisibility(View.VISIBLE);
 
@@ -182,7 +196,7 @@ byte[] pdf;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ConsultaActivity.this,"Se ah producido un error!!",Toast.LENGTH_LONG).show();
+                Toast.makeText(ConsultaActivity.this,"Error de Conexión!!",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
