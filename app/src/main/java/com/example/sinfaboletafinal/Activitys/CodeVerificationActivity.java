@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -33,6 +35,8 @@ public class CodeVerificationActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private EditText CodeVerification;
 
+    public int counter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +54,9 @@ public class CodeVerificationActivity extends AppCompatActivity {
         sendVerificationCode(phonenumber);
         txtMensaje.setText("Espere mientras se envía el codigo de verificación al número "+phonenumber+". Esto puede tardar unos segundos...");
         btnContinuar.setEnabled(false);
-        CodeVerification.setEnabled(false
-        );
+        CodeVerification.setEnabled(false);
+        FailResponse();
+        Configuraciones();
 
 
         btnContinuar.setOnClickListener(new View.OnClickListener() {
@@ -121,4 +126,33 @@ public class CodeVerificationActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    public void FailResponse(){
+        new CountDownTimer(30000, 1000){
+            public void onTick(long millisUntilFinished){
+                counter++;
+            }
+            public  void onFinish(){
+                if(CodeVerification.equals("")){
+                    Toast.makeText(CodeVerificationActivity.this,"Timeout error",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(CodeVerificationActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+
+                }
+
+            }
+        }.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+
+    public void Configuraciones(){
+        onBackPressed();
+    }
 }

@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -66,7 +67,6 @@ JsonRequest jrq;
 byte[] pdf;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +83,8 @@ byte[] pdf;
         btnConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 validaForm();
+
             }
         });
 

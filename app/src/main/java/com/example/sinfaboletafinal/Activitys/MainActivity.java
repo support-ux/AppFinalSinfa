@@ -89,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, CodeVerificationActivity.class);
         intent.putExtra("phonenumber", phoneNumber);
         startActivity(intent);
+        finish();
     }
+
+
 
 }
