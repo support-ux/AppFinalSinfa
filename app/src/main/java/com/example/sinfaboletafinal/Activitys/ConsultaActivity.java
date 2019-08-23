@@ -3,6 +3,7 @@ package com.example.sinfaboletafinal.Activitys;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,8 +17,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +54,8 @@ import java.util.Map;
 
 import okhttp3.ResponseBody;
 
+import static android.provider.VoicemailContract.AUTHORITY;
+
 public class ConsultaActivity extends AppCompatActivity {
 Button btnConsultar;
 Button btnDownload;
@@ -60,6 +65,7 @@ Spinner cboAnio;
 Spinner cboMes;
 
 String Nombre;
+String ruta;
 
 RequestQueue rq;
 JsonRequest jrq;
@@ -98,7 +104,8 @@ byte[] pdf;
     }
 
     private void DownloadPDF() {
-        String filepath ="/sdcard/Android_ux/"+Nombre+".pdf";
+        String filepath ="sdcard/Android_ux/"+Nombre+".pdf";
+        ruta=filepath;
         OutputStream pdffos = null;
         try {
             pdffos = new FileOutputStream(filepath);
@@ -122,6 +129,8 @@ byte[] pdf;
         }
         Toast.makeText(ConsultaActivity.this,"Boleta guardada en: "+filepath,Toast.LENGTH_LONG).show();
 
+        mostrarPDF();
+
     }
 
     public void validaForm(){
@@ -134,7 +143,7 @@ byte[] pdf;
         if(TextUtils.isEmpty(NSA)||NSA.length()<6) {
             txtnsa.setError("Ingrese NSA Válido...!!");
         }else{
-            buscarResultados("http://192.168.230.2/wsboletas/Datos/getDataClient.php?nsa="+NSA+"&anio="+ANIO+"&mes="+MES);
+            buscarResultados("https://support-ux.000webhostapp.com//wsboletas/Datos/getDataClient.php?nsa="+NSA+"&anio="+ANIO+"&mes="+MES);
 
         }
     }
@@ -231,25 +240,34 @@ byte[] pdf;
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
-            //Toast.makeText(getApplicationContext(), "Permission is revoked",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ConsultaActivity.this,"Visualizando PDF",Toast.LENGTH_LONG).show();
             //Log.v(TAG, "Permission is granted");
             return true;
         }
     }
 
-    /*public void mostrarPDF() {
-        String path = Environment.getExternalStorageDirectory()+"/Android_ux/"+Nombre;
-        File file = new File(path);
-        Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file),"application/pdf");
-        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        Intent intent = Intent.createChooser(target,"Open File");
+    public void mostrarPDF() {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
-        try{
-            startActivity(intent);
-        }catch (ActivityNotFoundException e){
-            Toast.makeText(this, "No cuentas con lector PDF",Toast.LENGTH_SHORT).show();
-        }
-    }*/
+        //final Intent intent = new Intent(Intent.ACTION_VIEW);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        /*shareIntent.setType("application/pdf");*/
+
+        File sharingFile = new File(ruta);
+        Uri outputPdfUri = FileProvider.getUriForFile(this, ConsultaActivity.this.getPackageName() + ".provider", sharingFile);
+
+        Uri uri = Uri.parse(""+outputPdfUri);
+        //intent.setDataAndType(uri,"application/pdf");
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        startActivity(intent);
+
+    }
 }
